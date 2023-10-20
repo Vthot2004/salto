@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://cvu2jn6uwpx0m"]
+
+[ext_resource type="Script" path="res://World/rail.gd" id="1_ydxcg"]
+[ext_resource type="Script" path="res://World/camioneta.gd" id="2_2jb0y"]
+[ext_resource type="Script" path="res://detectar.gd" id="3_rbrrh"]
+[ext_resource type="Texture2D" uid="uid://dwls7mswfjgyt" path="res://World/Props/crate.png" id="3_y2bj2"]
+
+[sub_resource type="Curve2D" id="Curve2D_7oqgp"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 16, 160, 0, 0, 0, 0, 16, 64)
+}
+point_count = 2
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bf0kd"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qo85c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tfxug"]
+size = Vector2(18, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_etlpx"]
+size = Vector2(18, 10)
+
+[node name="PlatVert" type="Path2D"]
+position = Vector2(24, 0)
+curve = SubResource("Curve2D_7oqgp")
+script = ExtResource("1_ydxcg")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(16, 160)
+rotation = -1.5708
+loop = false
+script = ExtResource("2_2jb0y")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PathFollow2D"]
+physics_material_override = SubResource("PhysicsMaterial_bf0kd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/StaticBody2D"]
+material = SubResource("CanvasItemMaterial_qo85c")
+position = Vector2(1, -1)
+shape = SubResource("RectangleShape2D_tfxug")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Area2D" type="Area2D" parent="PathFollow2D/StaticBody2D"]
+position = Vector2(24, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/StaticBody2D/Area2D"]
+position = Vector2(-0.0726089, -0.680183)
+scale = Vector2(1.1788, 0.861172)
+shape = SubResource("RectangleShape2D_etlpx")
+script = ExtResource("3_rbrrh")
+
+[node name="Timer" type="Timer" parent="PathFollow2D"]
+wait_time = 0.1
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D"]
+position = Vector2(0.966228, -0.96623)
+scale = Vector2(1.12078, 1.12078)
+texture = ExtResource("3_y2bj2")
